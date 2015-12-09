@@ -72,7 +72,7 @@ def allCollocations(headword):
 Nouns = ['words', 'word', 'nouns', 'noun', 'things', 'thing', 'something', 'example']
 Verbs = ['verbs', 'verb']
 Adjs = ['adjectives', 'ADJ', 'adj']
-wordBeforeTarget = ['describe', 'for', 'go with', 'use with', 'go for', 'use for', 'describe for', 'do for', 'do with', 'describes', 'goes with', 'uses with', 'goes for', 'uses for', 'describes for']
+wordBeforeTarget = ['describe', 'associate with', 'associates with', 'for', 'go with', 'use with', 'go for', 'use for', 'describe for', 'do for', 'do with', 'describes', 'goes with', 'uses with', 'goes for', 'uses for', 'describes for']
 deleteWord = ['a', 'an', 'the', 'how', 'what', 'is', 'are', 'which', 'I', 'you', 'good', 'best', 'can', 'could', 'should', 'would', 'be', 'What', 'what', 'How', 'how', 'Which', 'which', 'to']
 Synonym = ['same', 'synonyms', 'synonym', 'alike', 'another']
 
@@ -109,8 +109,11 @@ def main(query):
 
 if __name__ == '__main__':
     init()
-    query = raw_input(">>query: ")
-    transQuery(query)
+    while True:
+        query = raw_input(">>(type 'EX' to exit)\n>>query: ")
+        if query == 'EX': break
+        else: transQuery(query)
+
     # main(query)
     '''res = linggleit('~reliable')
     phrases = [ [  w.replace('<strong>','').replace('</strong>','')  for w in ngram['phrase'][:]] for ngram in res]
