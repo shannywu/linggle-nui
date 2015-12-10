@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>LinggleIt</title>
+  <link rel="stylesheet" type="text/css" href = "{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href = "{{ url_for('static', filename='css/bootstrap.css') }}">
+</head>
+
+<body>
+  <!-- Header Carousel -->
+  <div class="jumbotron">
+    <div class="container text-center">
+      <h2>Linggle.It</h2>
+      {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+      {% endfor %}
+      {% block body %}{% endblock %}
+    </div>
+  </div>
+
+  <div class="container">
+    {% block result %}{% endblock %}
+   </div>
+   <!--
+   <nav class="navbar navbar-default navbar-fixed-bottom">
+    <footer>
+      <div class="row-footer">
+        <div class="col-lg-12 text-center">
+          <p>Copyright &copy; Natural Language Processing Lab 2015</p>
+        </div>
+      </div>
+    </footer>
+    </nav>-->
+    <script src="static/js/jquery.js"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script src="static/js/bootstrap.min.js"></script>
+</body>
+</html>
