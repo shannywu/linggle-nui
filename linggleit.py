@@ -85,11 +85,11 @@ def vpCollocation(headword):
     query = template1 % headword
     return postProcess(start1, query)
 
-def allCollocations(headword):
-    vnCollocation(headword)
-    anCollocation(headword)
-    vanCollocation(headword)
-    vpCollocation(headword)
+# def allCollocations(headword):
+#     vnCollocation(headword)
+#     anCollocation(headword)
+#     vanCollocation(headword)
+#     vpCollocation(headword)
 
 Nouns = ['words', 'word', 'nouns', 'noun', 'things', 'thing', 'something', 'example']
 Verbs = ['verbs', 'verb']
@@ -121,7 +121,10 @@ def transQuery(question):
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
     elif 'N' in speech:
-        finalRes.append(allCollocations(headword[0]))
+        finalRes.append(vnCollocation(headword[0]))
+        finalRes.append(vanCollocation(headword[0]))
+        finalRes.append(anCollocation(headword[0]))
+        finalRes.append(vpCollocation(headword[0]))
     elif 'P' in speech:
         finalRes.append(vpCollocation(headword[0]))
     elif 'W' in speech:
