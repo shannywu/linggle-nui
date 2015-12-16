@@ -3,17 +3,17 @@
   <div class="row">
     <form action="{{ url_for('add_entry') }}" method="post" class="add-entry">
       <div class="input-group">
-        <div class="input-group-btn">
+        <!--<div class="input-group-btn">
           <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ask <span class="caret"></span></button>
             <ul class="dropdown-menu">
               <li><a href="#">Describe it</a></li>
               <li><a href="#">Verb me</a></li>
               <li><a href="#">Best preposition</a></li>
-              <!--<li role="separator" class="divider"></li>-->
-              <li><a href="#">Words alike</a></li>
+              <!<li role="separator" class="divider"></li>-->
+              <!--<li><a href="#">Words alike</a></li>
               <li><a href="#">Opposite one</a></li>
             </ul>
-        </div><!-- /btn-group -->
+        </div>--><!-- /btn-group -->
         <input type="text" name="text" size="40" class="form-control" value="{{ inputquery[0] }}">
         <div class="input-group-btn">
           <!--<button class="btn btn-info" type="submit" value="Input">Input</button>-->
@@ -27,18 +27,25 @@
 {% endblock %}
 
 {% block result %}
-
   <ul class="output">
   <!--</h2>query : {{inputquery[0]}}<p>-->
-  {% for res in output %}
-     {% for col in res %}
-      <font size="4" color="black">{{col}}</font></br>
-  {% else %}
-    <li><em>None</em></li>
+    {% for i in range((output|length) - 1) %}
+      {% if i%2==1 %}
+        <div class="bs-callout bs-callout-success">
+        <h4>{{ output[0][i] }}</h4>
+      {% endif %}
+      {% if i%2==0 %}
+        <div class="bs-callout bs-callout-primary">
+        <h4>{{ output[0][i] }}</h4>
+      {% endif %}
+      {% for col in output[i+1] %}
+        <font size="4" color="black">{{ col[0] }}</font>
+        <font size="4" color="red">{{ col[1] }}</font></br>
+      {% endfor %}
+    </div>
   {% endfor %}
-  {%  endfor %}
   </ul>
-  <!--<ul class="inputquery">
-  </ul>-->
-  
 {% endblock %}
+
+
+

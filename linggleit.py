@@ -11,32 +11,6 @@ def linggleit(query):
     r = requests.get(url)
     if r.status_code == 200:
         return r.json()
-'''
-dic = defaultdict(lambda: [])
-
-def init():
-    for line in open('bnc.word.lemma.pos.txt'):
-        print line
-        #if line == '': continue
-
-        lemma, word, tag, count, _, _ = line.strip().split(' ')
-        word, lemma = word[1:-1], lemma[1:-1]
-        if word in dic.keys():
-            dic[word] += [ (float(count), lemma) ]
-            #print dic[word]
-        else:
-            dic[word] = [ (float(count), lemma) ]
-            #print dic[word]
-            #print dic[word[1:-1]]
-
-    for key in dic.keys():
-        print dic[key]
-        #print max(dic[key])[1]
-        dic[key] = max(dic[key])[1]
-        print dic[key]
-    
-    #return
-'''
 
 def postProcess(start1, query):
     #print; print query; print
@@ -115,19 +89,24 @@ def transQuery(question):
     finalRes = []
 
     if 'V' in speech:
+        finalRes.append(['vnCollocation', 'vanCollocation'])
         finalRes.append(vnCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
     elif 'A' in speech:
+        finalRes.append(['anCollocation', 'vanCollocation'])
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
     elif 'N' in speech:
+        finalRes.append(['vnCollocation', 'vanCollocation', 'anCollocation', 'vpCollocation'])
         finalRes.append(vnCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vpCollocation(headword[0]))
     elif 'P' in speech:
+        finalRes.append(['vpCollocation'])
         finalRes.append(vpCollocation(headword[0]))
     elif 'W' in speech:
+        finalRes.append(['anCollocation', 'vanCollocation'])
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
     else:
@@ -135,35 +114,12 @@ def transQuery(question):
     
     return finalRes
 
-#def main(query):
-#    allCollocations(query)
-    #allCollocations('role')
-#    return
-
-if __name__ == '__main__':
-    while True:
-        query = raw_input(">>(type 'EX' to exit)\n>>query: ")
-        if query == 'EX': break
-        else: 
-            for q in transQuery(query):
-                for i in q:
-                    print '{}\t{}'.format(i[0],i[1])
-                print '========================================'
-            
-
-    # main(query)
-    '''res = linggleit('~reliable')
-    phrases = [ [  w.replace('<strong>','').replace('</strong>','')  for w in ngram['phrase'][:]] for ngram in res]
-    phrases = [ [dic[ph[0].strip().lower()]]+ ph[1:] for ph in phrases]
-    phrases = [ ' '.join([x.strip() for x in ph]) for ph in phrases]
-    counts = [ ngram['count_str'] for ngram in res]
-    counts = [ int(x.replace(',','')) for x in counts]
-
-    ngramCounts = zip(phrases, counts)
-    ngramCounts.sort(key=lambda x: x[0])
-    ngramCounts = [ (ngram, sum( [x[1] for x in ngramcounts ] )) \
-                    for ngram, ngramcounts in groupby(ngramCounts, key=lambda x:x[0]) ]
-    ngramCounts.sort(key=lambda x:x[1], reverse=True)
-    for ngram, count in ngramCounts:
-        print '%s\t%s' % (ngram, count)
-    main()'''
+# if __name__ == '__main__':
+#     while True:
+#         query = raw_input(">>(type 'EX' to exit)\n>>query: ")
+#         if query == 'EX': break
+#         else: 
+#             for q in transQuery(query):
+#                 for i in q:
+#                     print '{}\t{}'.format(i[0],i[1])
+#                 print '========================================'
