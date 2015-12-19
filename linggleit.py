@@ -16,7 +16,7 @@ def postProcess(start1, query):
     #print; print query; print
     res = linggleit(query)
     phrases = [ [  w.replace('<strong>','').replace('</strong>','')  for w in ngram['phrase'][start1:]] for ngram in res]
-    phrases = [ [sqlite.search_lemma(ph[0].strip().lower())]+ ph[1:] for ph in phrases]
+    phrases = [ [ sqlite.search_lemma(ph[0].strip().lower())]+ ph[1:] for ph in phrases]
     phrases = [ ' '.join([x.strip() for x in ph]) for ph in phrases]
     counts = [ ngram['count_str'] for ngram in res]
     counts = [ int(x.replace(',','')) for x in counts]
@@ -57,7 +57,24 @@ def vpCollocation(headword):
     template1 = 'pron. %s ?prep. ?n.'
     start1 = 1
     query = template1 % headword
-    return postProcess(start1, query)
+    post = postProcess(start1, query)
+    tmp = []
+    removeIndex = []
+    for i in range(len(post)):
+        lastWord = post[i][0].split(' ')[-1]
+        lemma = sqlite.search_lemma(lastWord.strip().lower())
+        if str(lastWord) != str(lemma):
+            for j in range(len(post)):
+                _lastWord = post[j][0].split(' ')[-1]
+                if str(lemma) == str(_lastWord):
+                    tmp.append([ post[j][0] + '/' + lastWord, int(post[j][1]) + int(post[i][1])])
+                    removeIndex.append(i)
+                    removeIndex.append(j)
+    for ind in removeIndex:
+        post.remove(post[int(ind)])
+    res = tmp + post
+    res.sort(key=lambda x:x[1], reverse=True)
+    return res
 
 def synonym(headword):
     template1 = '~%s'
@@ -99,27 +116,33 @@ def transQuery(question):
     finalRes = []
 
     if 'V' in speech_n:
-        finalRes.append(['pron. v. ?prep. ?det. '+headword[0], 'v. ?prep. ?det. adj. '+headword[0]])
+        finalRes.append(['v. ?prep. ?det. ' + headword[0], \
+            'v. ?prep. ?det. adj. ' + headword[0]])
         finalRes.append(vnCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
     elif 'S' in speech_n:
         finalRes.append(['~'+headword[0]])
         finalRes.append(synonym(headword[0]))
     elif 'P' in speech_n:
-        finalRes.append(['pron. '+headword[0]+' ?prep. ?n.'])
+        finalRes.append([ headword[0] + ' ?prep. ?n.'])
         finalRes.append(vpCollocation(headword[0]))
     elif 'A' in speech_n:
-        finalRes.append(['det./prep. adj. '+headword[0], 'v. ?prep. ?det. adj. '+headword[0]])
+        finalRes.append(['adj. ' + headword[0], \
+            'v. ?prep. ?det. adj. ' + headword[0]])
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
     elif 'N' in speech_n:
-        finalRes.append(['pron. '+headword[0]+' ?prep. ?n.', 'pron. v. ?prep. ?det. '+headword[0], 'v. ?prep. ?det. adj. '+headword[0], 'det./prep. adj. '+headword[0]])
+        finalRes.append([headword[0] + ' ?prep. ?n.', \
+            'v. ?prep. ?det. '+headword[0], \
+            'v. ?prep. ?det. adj. ' + headword[0], \
+            'adj. '+headword[0]])
         finalRes.append(vpCollocation(headword[0]))
         finalRes.append(vnCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
         finalRes.append(anCollocation(headword[0]))
     elif 'W' in speech_n:
-        finalRes.append(['det./prep. adj. '+headword[0], 'v. ?prep. ?det. adj. '+headword[0]])
+        finalRes.append(['adj. '+headword[0], \
+            'v. ?prep. ?det. adj. '+headword[0]])
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
     else:
@@ -132,7 +155,7 @@ if __name__ == '__main__':
         query = raw_input(">>(type 'EX' to exit)\n>>query: ")
         if query == 'EX': break
         else: 
-            print transQuery(query)[0]
+            #print '0: ' + str(transQuery(query)[0])
             print '------------------------------------------------'
             for q in transQuery(query)[1:]:
                 for i in q:
