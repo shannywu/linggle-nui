@@ -17,20 +17,7 @@ h2              { font-size: 1.2em; }
                   border: 1px solid #AACBE2; }
 .error          { background: #F0D6D6; padding: 0.5em; }
 
-.text0{
-    height: 120px;
+.text{
+    height: 130px;
     overflow: hidden;
 }
-.text1{
-    height: 120px;
-    overflow: hidden;
-}
-.text2{
-    height: 120px;
-    overflow: hidden;
-}
-.text3{
-    height: 120px;
-    overflow: hidden;
-}
-

@@ -1,5 +1,5 @@
-Natural Language Processing Lab.
-Term Project
+Natural Language Processing Lab. Term Project
+Natural User Interface for Linggle
 =============================================
 Linggle provides language usage and frequency information for a large number of cases in context, which has long been recognized as crucial to language learning. However, Linggle commands are not that easily to come out from users’ mind without a brief user guide or some examples. Thus, we have an idea of creating a natural user interface for Linggle. 
 

@@ -17,41 +17,23 @@
 {% block result %}
   <div class="output">
     {% for i in range((output|length) - 1) %}
-      <div class="alert alert-info center-block">
-        <h4 class="text-center">{{ output[0][i] }}</h4>
-        {% if i%2==0 %}
-          <div class="row text0">
-        {% endif %}
-        {% if i%2==1 %}
-          <div class="row text1">
-        {% endif %}
-        {% if i%2==2 %}
-          <div class="row text2">
-        {% endif %}
-        {% if i%2==3 %}
-          <div class="row text3">
-        {% endif %}
-          {% for col in output[1:][i] %}
-            <div class="col-md-6 text-muted">
-              <font size="4">{{ col[0] }}</font></div>
-            <div class="col-md-6 text-right text-danger">
-              <font size="4">{{ col[1] }}</font></div>
-          {% endfor %}
+    <div class="alert alert-info center-block">
+      <h4 class="text-center">{{ output[0][i] }}</h4>
+      <div class="row text">
+      {% for col in output[1:][i] %}
+        <div class="col-md-6 text-muted">
+          <font size="4">{{ col[0] }}</font>
         </div>
-        {% if i%2==0 %}
-          <h5 class="text-center text-info" id="more0">
-        {% endif %}
-        {% if i%2==1 %}
-          <h5 class="text-center text-info" id="more1">
-        {% endif %}
-        {% if i%2==2 %}
-          <h5 class="text-center text-info" id="more2">
-        {% endif %}
-        {% if i%2==3 %}
-          <h5 class="text-center text-info" id="more3">
-        {% endif %}
-        <a herf="#">more</a></h5>
+        <div class="col-md-6 text-right text-danger">
+          <font size="4">{{ col[1] }}</font>
+        </div>
+      {% endfor %}
       </div>
+
+      <h5 class="text-center text-info more">
+        <span class="glyphicon glyphicon-chevron-down"></span>
+      </h5>
+    </div>
     {% endfor %}
   </div>
 {% endblock %}
