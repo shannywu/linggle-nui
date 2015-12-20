@@ -3,20 +3,8 @@
   <div class="row">
     <form action="{{ url_for('add_entry') }}" method="post" class="add-entry">
       <div class="input-group">
-        <!--<div class="input-group-btn">
-          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ask <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a href="#">Describe it</a></li>
-              <li><a href="#">Verb me</a></li>
-              <li><a href="#">Best preposition</a></li>
-              <!<li role="separator" class="divider"></li>-->
-              <!--<li><a href="#">Words alike</a></li>
-              <li><a href="#">Opposite one</a></li>
-            </ul>
-        </div>--><!-- /btn-group -->
         <input type="text" name="text" size="40" class="form-control" value="{{ inputquery[0] }}">
         <div class="input-group-btn">
-          <!--<button class="btn btn-info" type="submit" value="Input">Input</button>-->
           <button class="btn btn-info" type="submit" value="Input">
             <span class="glyphicon glyphicon-search"></span> 
           </button>
@@ -27,24 +15,45 @@
 {% endblock %}
 
 {% block result %}
-  <ul class="output">
-  <!--</h2>query : {{inputquery[0]}}<p>-->
+  <div class="output">
     {% for i in range((output|length) - 1) %}
-      {% if i%2==1 %}
-        <div class="bs-callout bs-callout-success">
-        <h4>{{ output[0][i] }}</h4>
-      {% endif %}
-      {% if i%2==0 %}
-        <div class="bs-callout bs-callout-primary">
-        <h4>{{ output[0][i] }}</h4>
-      {% endif %}
-      {% for col in output[i+1] %}
-        <font size="4" color="black">{{ col[0] }}</font>
-        <font size="4" color="red">{{ col[1] }}</font></br>
-      {% endfor %}
-    </div>
-  {% endfor %}
-  </ul>
+      <div class="alert alert-info center-block">
+        <h4 class="text-center">{{ output[0][i] }}</h4>
+        {% if i%2==0 %}
+          <div class="row text0">
+        {% endif %}
+        {% if i%2==1 %}
+          <div class="row text1">
+        {% endif %}
+        {% if i%2==2 %}
+          <div class="row text2">
+        {% endif %}
+        {% if i%2==3 %}
+          <div class="row text3">
+        {% endif %}
+          {% for col in output[1:][i] %}
+            <div class="col-md-6 text-muted">
+              <font size="4">{{ col[0] }}</font></div>
+            <div class="col-md-6 text-right text-danger">
+              <font size="4">{{ col[1] }}</font></div>
+          {% endfor %}
+        </div>
+        {% if i%2==0 %}
+          <h5 class="text-center text-info" id="more0">
+        {% endif %}
+        {% if i%2==1 %}
+          <h5 class="text-center text-info" id="more1">
+        {% endif %}
+        {% if i%2==2 %}
+          <h5 class="text-center text-info" id="more2">
+        {% endif %}
+        {% if i%2==3 %}
+          <h5 class="text-center text-info" id="more3">
+        {% endif %}
+        <a herf="#">more</a></h5>
+      </div>
+    {% endfor %}
+  </div>
 {% endblock %}
 
 

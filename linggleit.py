@@ -147,6 +147,10 @@ def transQuery(question):
         finalRes.append(vanCollocation(headword[0]))
     else:
         finalRes.append('I don\'t know what are you talking about')
+    # finalRes.append(['test1','test2'])
+    # finalRes.append([('a',0),('b',1),('c',2),('d',3),('e',4),('f',5),('g',6)])
+    # finalRes.append([('a',6),('b',5),('c',4),('d',3),('e',2),('f',1),('g',0)])
+    #print finalRes
     
     return finalRes
 

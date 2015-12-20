@@ -1355,6 +1355,7 @@ a.text-success:hover {
 }
 .text-info {
   color: #31708f;
+  cursor: pointer; 
 }
 a.text-info:hover {
   color: #245269;
@@ -1607,7 +1608,7 @@ pre code {
 .row {
   margin-right: -15px;
   margin-left: -15px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .row-footer {
@@ -2547,6 +2548,9 @@ output {
   font-size: 14px;
   line-height: 1.42857143;
   color: #555;
+}
+.output {
+
 }
 .form-control {
   display: block;
@@ -4924,10 +4928,10 @@ a.badge:focus {
 }
 .jumbotron {
   padding: 30px 15px;
-  margin-bottom: 90px;
+  margin-bottom: 30px;
   color: inherit;
   background-color: #eee;
-  height: 250px;
+  height: 200px;
 }
 .jumbotron h1,
 .jumbotron .h1 {
@@ -4950,7 +4954,7 @@ a.badge:focus {
 }
 @media screen and (min-width: 768px) {
   .jumbotron {
-    padding: 48px 0;
+    padding: 18px 0;
   }
   .container .jumbotron,
   .container-fluid .jumbotron {
@@ -4993,6 +4997,7 @@ a.thumbnail.active {
   margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 4px;
+  width: 700px;
 }
 .alert h4 {
   margin-top: 0;
