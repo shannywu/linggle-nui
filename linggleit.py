@@ -77,9 +77,11 @@ def vpCollocation(headword):
     return res
 
 def synonym(headword):
-    template1 = '~%s'
+    query = '~'.join(headword.strip().split(' '))
+    print query
+    # template1 = '~%s'
     start1 = 0
-    query = template1 % headword
+    # query = template1 % headword
     return postProcess(start1, query)
 
 # def allCollocations(headword):
@@ -94,7 +96,7 @@ Adjs = ['adjectives', 'ADJ', 'adj']
 Preps = ['preposition', 'prepositions', 'prep']
 wordBeforeTarget = ['describe', 'associate with', 'associates with', 'for', 'of', 'go with', 'use with', 'go for', 'use for', 'describe for', 'do for', 'do with', 'describes', 'goes with', 'uses with', 'goes for', 'uses for', 'describes for']
 deleteWord = ['a', 'an', 'the', 'how', 'what', 'is', 'are', 'which', 'I', 'you', 'good', 'best', 'can', 'could', 'should', 'would', 'be', 'What', 'what', 'How', 'how', 'Which', 'which']
-Synonym = ['same', 'syn', 'synonyms', 'synonym', 'alike', 'another']
+Synonym = ['same', 'syn', 'synonyms', 'synonym', 'alike', 'another', 'paraphase', 'replace', 'rewrite']
 
 def transQuery(question):
     que = [ token for token in re.findall("\w+", question)]
@@ -111,45 +113,45 @@ def transQuery(question):
     # print speech_n
     headword = [' '.join(que[(que.index(i.strip().split(' ')[-1])+1):]) for i in wordBeforeTarget if ' '+i+' ' in ' '.join(que)]
     if '' in headword: headword.remove('')
-    # print headword
+    print headword
 
     finalRes = []
 
-    # if 'V' in speech_n:
-    #     finalRes.append(['v. ?prep. ?det. ' + headword[0], \
-    #         'v. ?prep. ?det. adj. ' + headword[0]])
-    #     finalRes.append(vnCollocation(headword[0]))
-    #     finalRes.append(vanCollocation(headword[0]))
-    # elif 'S' in speech_n:
-    #     finalRes.append(['~'+headword[0]])
-    #     finalRes.append(synonym(headword[0]))
-    # elif 'P' in speech_n:
-    #     finalRes.append([ headword[0] + ' ?prep. ?n.'])
-    #     finalRes.append(vpCollocation(headword[0]))
-    # elif 'A' in speech_n:
-    #     finalRes.append(['adj. ' + headword[0], \
-    #         'v. ?prep. ?det. adj. ' + headword[0]])
-    #     finalRes.append(anCollocation(headword[0]))
-    #     finalRes.append(vanCollocation(headword[0]))
-    # elif 'N' in speech_n:
-    #     finalRes.append([headword[0] + ' ?prep. ?n.', \
-    #         'v. ?prep. ?det. '+headword[0], \
-    #         'v. ?prep. ?det. adj. ' + headword[0], \
-    #         'adj. '+headword[0]])
-    #     finalRes.append(vpCollocation(headword[0]))
-    #     finalRes.append(vnCollocation(headword[0]))
-    #     finalRes.append(vanCollocation(headword[0]))
-    #     finalRes.append(anCollocation(headword[0]))
-    # elif 'W' in speech_n:
-    #     finalRes.append(['adj. '+headword[0], \
-    #         'v. ?prep. ?det. adj. '+headword[0]])
-    #     finalRes.append(anCollocation(headword[0]))
-    #     finalRes.append(vanCollocation(headword[0]))
-    # else:
-    #     finalRes.append('I don\'t know what are you talking about')
-    finalRes.append(['test1','test2'])
-    finalRes.append([('a',0),('b',1),('c',2),('d',3),('e',4),('f',5),('g',6)])
-    finalRes.append([('a',6),('b',5),('c',4),('d',3),('e',2),('f',1),('g',0)])
+    if 'V' in speech_n:
+        finalRes.append(['v. ?prep. ?det. ' + headword[0], \
+            'v. ?prep. ?det. adj. ' + headword[0]])
+        finalRes.append(vnCollocation(headword[0]))
+        finalRes.append(vanCollocation(headword[0]))
+    elif 'S' in speech_n:
+        finalRes.append(['~'+headword[0]])
+        finalRes.append(synonym(headword[0]))
+    elif 'P' in speech_n:
+        finalRes.append([ headword[0] + ' ?prep. ?n.'])
+        finalRes.append(vpCollocation(headword[0]))
+    elif 'A' in speech_n:
+        finalRes.append(['adj. ' + headword[0], \
+            'v. ?prep. ?det. adj. ' + headword[0]])
+        finalRes.append(anCollocation(headword[0]))
+        finalRes.append(vanCollocation(headword[0]))
+    elif 'N' in speech_n:
+        finalRes.append([headword[0] + ' ?prep. ?n.', \
+            'v. ?prep. ?det. '+headword[0], \
+            'v. ?prep. ?det. adj. ' + headword[0], \
+            'adj. '+headword[0]])
+        finalRes.append(vpCollocation(headword[0]))
+        finalRes.append(vnCollocation(headword[0]))
+        finalRes.append(vanCollocation(headword[0]))
+        finalRes.append(anCollocation(headword[0]))
+    elif 'W' in speech_n:
+        finalRes.append(['adj. '+headword[0], \
+            'v. ?prep. ?det. adj. '+headword[0]])
+        finalRes.append(anCollocation(headword[0]))
+        finalRes.append(vanCollocation(headword[0]))
+    else:
+        finalRes.append('I don\'t know what are you talking about')
+    # finalRes.append(['test1','test2'])
+    # finalRes.append([('a',0),('b',1),('c',2),('d',3),('e',4),('f',5),('g',6)])
+    # finalRes.append([('a',6),('b',5),('c',4),('d',3),('e',2),('f',1),('g',0)])
     #print finalRes
     
     return finalRes
