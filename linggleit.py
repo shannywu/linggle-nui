@@ -5,7 +5,6 @@ import urllib, re, sqlite
 from itertools import groupby, imap, product
 from collections import defaultdict
 import fileinput
-import math
 
 def linggleit(query):
     url = 'http://linggle.com/query/{}'.format(urllib.quote(query, safe=''))
@@ -88,7 +87,6 @@ def vpCollocation(headword):
     post = postProcess(start1, query)
     tmp = []
     removeIndex = []
-    # merge detail and details
     for i in range(len(post)):
         lastWord = post[i][0].split(' ')[-1]
         lemma = sqlite.search_lemma(lastWord.strip().lower())
@@ -106,9 +104,11 @@ def vpCollocation(headword):
     return res
 
 def synonym(headword):
-    template1 = '~%s'
+    query = '~'.join(headword.strip().split(' '))
+    print query
+    # template1 = '~%s'
     start1 = 0
-    query = template1 % headword
+    # query = template1 % headword
     return postProcess(start1, query)
 
 # def allCollocations(headword):
@@ -123,7 +123,7 @@ Adjs = ['adjectives', 'ADJ', 'adj']
 Preps = ['preposition', 'prepositions', 'prep']
 wordBeforeTarget = ['describe', 'associate with', 'associates with', 'for', 'of', 'go with', 'use with', 'go for', 'use for', 'describe for', 'do for', 'do with', 'describes', 'goes with', 'uses with', 'goes for', 'uses for', 'describes for']
 deleteWord = ['a', 'an', 'the', 'how', 'what', 'is', 'are', 'which', 'I', 'you', 'good', 'best', 'can', 'could', 'should', 'would', 'be', 'What', 'what', 'How', 'how', 'Which', 'which']
-Synonym = ['same', 'syn', 'synonyms', 'synonym', 'alike', 'another']
+Synonym = ['same', 'syn', 'synonyms', 'synonym', 'alike', 'another', 'paraphase', 'replace', 'rewrite']
 
 def transQuery(question):
     que = [ token for token in re.findall("\w+", question)]
@@ -140,7 +140,7 @@ def transQuery(question):
     # print speech_n
     headword = [' '.join(que[(que.index(i.strip().split(' ')[-1])+1):]) for i in wordBeforeTarget if ' '+i+' ' in ' '.join(que)]
     if '' in headword: headword.remove('')
-    # print headword
+    print headword
 
     finalRes = []
 
