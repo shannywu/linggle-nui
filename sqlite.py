@@ -39,6 +39,12 @@ def search_lemma(word):
         for res in cur.execute(cmd):
             return res[0]
 
+def search_tag(word):
+    with get_connection() as conn:
+        cur = conn.cursor()
+        cmd = 'SELECT lemma, tag FROM WordLemma WHERE word="%s";' % (word)
+        return [res[1] for res in cur.execute(cmd)]
+
 if __name__ == '__main__':
     # bnc word lemma data
     word_lemmas = list(parse_bnc_word_lemma())
