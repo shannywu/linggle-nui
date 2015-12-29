@@ -11,7 +11,6 @@ $('.more').click(function() {
         height: (contentHeight == content.height() ? 130 : contentHeight)
     }, 1000);
 
-    
     var button = $(this).children('span');
     if (button.hasClass('glyphicon-chevron-down')) {
         button.removeClass('glyphicon-chevron-down').addClass("glyphicon-chevron-up");
