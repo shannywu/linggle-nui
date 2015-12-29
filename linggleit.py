@@ -51,7 +51,34 @@ def anCollocation(headword):
     template1 = 'det./prep. adj. %s'
     start1 = 1
     query = template1 % headword
-    return postProcess(start1, query)
+    post = postProcess(start1, query)
+    #print post
+    # post = [(u'sandy beach', 120497), (u'private beach', 76260), \
+    # (u'beautiful beach', 50240), (u'near beach', 42217), (u'good beach', 31485), \
+    # (u'long beach', 27049), (u'public beach', 23965), (u'small beach', 21830), \
+    # (u'nude beach', 21194), (u'main beach', 19780), (u'great beach', 14793), \
+    # (u'secluded beach', 14610), (u'nice beach', 12379), (u'tropical beach', 11170), \
+    # (u'nearby beach', 10881), (u'desert beach', 9812), (u'rocky beach', 8534), \
+    # (u'lovely beach', 7672), (u'quiet beach', 7594), (u'local beach', 6987), \
+    # (u'perfect beach', 6394), (u'spin beach', 6106), (u'popular beach', 5537), \
+    # (u'concrete beach', 5263), (u'remote beach', 5056), (u'following beach', 4980), \
+    # (u'famous beach', 4888), (u'ocean beach', 4837), (u'sunny beach', 4618), \
+    # (u'maui beach', 4369), (u'pristine beach', 4104), (u'little beach', 4072)]
+
+    headcount = int(linggleit(headword)[0]['count'])
+    #headcount = 25866110
+    #print headcount
+    rerank = []
+    for p in post:
+        #print p[0].split(' ')[0] # first word
+        colcount = int(linggleit(p[0].split(' ')[0])[0]['count'])
+        mi = math.log(float(p[1])/(colcount * headcount), 10)
+        print p[0], mi
+        rerank.append((p[0], p[1], mi))
+    rerank.sort(key=lambda x:x[2], reverse=True)
+    for r in rerank:
+        print r
+    return rerank
 
 def vpCollocation(headword):
     template1 = 'pron. %s ?prep. ?n.'
