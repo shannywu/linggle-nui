@@ -4,7 +4,7 @@ import requests
 import urllib, re, sqlite
 from itertools import groupby, imap, product
 from collections import defaultdict
-import fileinput
+import fileinput, math
 
 def linggleit(query):
     url = 'http://linggle.com/query/{}'.format(urllib.quote(query, safe=''))
