@@ -18,6 +18,6 @@ h2              { font-size: 1.2em; }
 .error          { background: #F0D6D6; padding: 0.5em; }
 
 .text{
-    height: 130px;
-    overflow: hidden;
+  height: 130px;
+  overflow: hidden;
 }
