@@ -23,6 +23,15 @@
       {% endfor %}
       {% block body %}{% endblock %}
     </div>
+    最後結果：<input id="textBox" type="text" size="60" value=""/><BR/>
+    中間結果：<input id="tempBox" type="text" size="60" value=""/><BR/>
+    辨識語言：
+    <select id="langCombo">
+      <option value="en-US">英文(美國)</option>
+      <option value="cmn-Hant-TW">中文(台灣)</option>
+    </select>
+    <input id="startStopButton" type="button" value="辨識" onclick="startButton(event)"/><BR/>
+    <label id="infoBox"></label>
   </div>
 
   <div class="container">
@@ -48,6 +57,7 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="static/js/jquery.js"></script>
+  <script src="static/js/speech.js"></script>
   <script src="static/js/bootstrap.min.js"></script>
   <script src="static/js/show_more.js"></script>
 </body>
