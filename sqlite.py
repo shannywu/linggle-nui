@@ -42,13 +42,18 @@ def search_lemma(word):
 def search_tag(word):
     with get_connection() as conn:
         cur = conn.cursor()
-        cmd = 'SELECT lemma, tag FROM WordLemma WHERE word="%s";' % (word)
-        return [res[1] for res in cur.execute(cmd)]
-
+        cmd = 'SELECT lemma, tag, probability FROM WordLemma WHERE word="%s";' % (word)
+        # for res in cur.execute(cmd):
+        #     return res[1]        
+        cmd = 'SELECT tag FROM WordLemma WHERE word="%s" ORDER BY probability DESC;' % (word)
+        tags = [res[0] for res in cur.execute(cmd)]
+        return tags[:2]
+        
+'''
 if __name__ == '__main__':
     # bnc word lemma data
     word_lemmas = list(parse_bnc_word_lemma())
     # insert data into sqlite3 db
     init_word_lemma_db(word_lemmas)
     # search example. (Notice: result will be None if not exist)
-    print search_lemma('beach');
+    print search_lemma('beach');'''

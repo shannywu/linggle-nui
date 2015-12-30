@@ -134,7 +134,7 @@ Synonym = ['same', 'syn', 'synonyms', 'synonym', 'alike', 'another', 'paraphase'
 
 def transQuery(question):
     que = [ token for token in re.findall("\w+", question)]
-    [que.remove(i) for i in deleteWord if i in que]
+    # [que.remove(i) for i in deleteWord if i in que]
     print que
     speech = ['N' for i in Nouns if i in que]
     speech += ['V' for i in Verbs if i in que]
@@ -151,6 +151,11 @@ def transQuery(question):
     else:
         headword = [' '.join(que[(que.index(i)+1):]) for i in que if i in Synonym]
     print headword
+
+    # use search_tag() to get headword's speech
+    # noun -> n ; verb -> v ; adj -> a ; adv -> r ; prep -> p ; interjection -> i
+    tags = sqlite.search_tag(headword[0].strip())
+    print tags
 
     finalRes = []
 
