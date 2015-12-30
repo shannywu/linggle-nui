@@ -35,6 +35,12 @@ def postProcess(start1, query):
     #dic.clear()
     return resList
 
+def adv_aCollocation(headword):
+    template1 = 'adv. ?adj. %s'
+    start1 = 0
+    query = template1 % headword
+    return postProcess(start1, query)
+
 def vnCollocation(headword):
     template1 = 'pron. v. ?prep. ?det. %s'
     start1 = 1
@@ -128,17 +134,17 @@ Synonym = ['same', 'syn', 'synonyms', 'synonym', 'alike', 'another', 'paraphase'
 def transQuery(question):
     que = [ token for token in re.findall("\w+", question)]
     [que.remove(i) for i in deleteWord if i in que]
-    # print que
+    print que
     speech = ['N' for i in Nouns if i in que]
     speech += ['V' for i in Verbs if i in que]
     speech += ['A' for i in Adjs if i in que]
     speech += ['P' for i in Preps if i in que]
     speech += ['S' for i in Synonym if i in que]
-    speech += ['W' for i in wordBeforeTarget if ' '+i+' ' in ' '.join(que)]
-    # print speech
+    speech += ['W' for i in wordBeforeTarget if ' '+i+' ' in ' '+' '.join(que)]
+    print speech
     speech_n = list(set(speech))
-    # print speech_n
-    headword = [' '.join(que[(que.index(i.strip().split(' ')[-1])+1):]) for i in wordBeforeTarget if ' '+i+' ' in ' '.join(que)]
+    print speech_n
+    headword = [' '.join(que[(que.index(i.strip().split(' ')[-1])+1):]) for i in wordBeforeTarget if ' '+i+' ' in ' '+' '.join(que)]
     if '' in headword: headword.remove('')
     print headword
 
@@ -164,16 +170,20 @@ def transQuery(question):
         finalRes.append([headword[0] + ' ?prep. ?n.', \
             'v. ?prep. ?det. '+headword[0], \
             'v. ?prep. ?det. adj. ' + headword[0], \
-            'adj. '+headword[0]])
+            'adj. '+headword[0], \
+            'adv. ?adj. '+headword[0]])
         finalRes.append(vpCollocation(headword[0]))
         finalRes.append(vnCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
         finalRes.append(anCollocation(headword[0]))
+        finalRes.append(adv_aCollocation(headword[0]))
     elif 'W' in speech_n:
         finalRes.append(['adj. '+headword[0], \
-            'v. ?prep. ?det. adj. '+headword[0]])
+            'v. ?prep. ?det. adj. '+headword[0], \
+            'adv. ?adj. '+headword[0]])
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
+        finalRes.append(adv_aCollocation(headword[0]))
     else:
         finalRes.append('I don\'t know what are you talking about')
     # finalRes.append(['test1','test2'])
