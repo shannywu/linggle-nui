@@ -91,6 +91,7 @@ def vpCollocation(headword):
     start1 = 1
     query = template1 % headword
     post = postProcess(start1, query)
+    # combine "pay attention to detail" & "... to details"-->"pay attention to detail/details"
     tmp = []
     removeIndex = []
     for i in range(len(post)):
@@ -128,7 +129,7 @@ Verbs = ['verbs', 'verb']
 Adjs = ['adjectives', 'ADJ', 'adj']
 Preps = ['preposition', 'prepositions', 'prep']
 wordBeforeTarget = ['describe', 'associate with', 'associates with', 'for', 'of', 'go with', 'use with', 'go for', 'use for', 'describe for', 'do for', 'do with', 'describes', 'goes with', 'uses with', 'goes for', 'uses for', 'describes for']
-deleteWord = ['a', 'an', 'the', 'how', 'what', 'is', 'are', 'which', 'I', 'you', 'good', 'best', 'can', 'could', 'should', 'would', 'be', 'What', 'what', 'How', 'how', 'Which', 'which']
+deleteWord = ['a', 'an', 'the', 'how', 'what', 'is', 'are', 'which', 'I', 'you', 'can', 'could', 'should', 'would', 'be', 'What', 'what', 'How', 'how', 'Which', 'which']
 Synonym = ['same', 'syn', 'synonyms', 'synonym', 'alike', 'another', 'paraphase', 'replace', 'rewrite']
 
 def transQuery(question):
@@ -144,8 +145,11 @@ def transQuery(question):
     print speech
     speech_n = list(set(speech))
     print speech_n
-    headword = [' '.join(que[(que.index(i.strip().split(' ')[-1])+1):]) for i in wordBeforeTarget if ' '+i+' ' in ' '+' '.join(que)]
-    if '' in headword: headword.remove('')
+    if 'W' in speech_n:
+        headword = [' '.join(que[(que.index(i.strip().split(' ')[-1])+1):]) for i in wordBeforeTarget if ' '+i+' ' in ' '+' '.join(que)]
+        if '' in headword: headword.remove('')
+    else:
+        headword = [' '.join(que[(que.index(i)+1):]) for i in que if i in Synonym]
     print headword
 
     finalRes = []
