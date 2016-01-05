@@ -189,7 +189,7 @@ def transQuery(question):
         finalRes.append(adv_aCollocation(headword[0]))
     elif 'W' in speech_n:
         if 'v' in tags or 'a' in tags:
-            finalRes.append(['adv. ?adj. '+headword[0], \
+            finalRes.append([headword[0], 'adv. ?adj. '+headword[0], \
                 'adj. '+headword[0], \
                 'v. ?prep. ?det. adj. '+headword[0]])
             finalRes.append(adv_aCollocation(headword[0]))
