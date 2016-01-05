@@ -51,23 +51,7 @@ def vanCollocation(headword):
     start1 = 0
     query = template1 % headword
     post = postProcess(start1, query)
-    # post = [(u'have great difficulty', 97059), (u'have little difficulty', 35477),\
-    # (u'have experienced difficulty', 9498), (u'have a little difficulty', 9075),\
-    # (u'have greater difficulty', 8788), (u'have considerable difficulty', 8523),\
-    # (u'be in financial difficulty', 7046), (u'have extreme difficulty', 6498),\
-    # (u'have the greatest difficulty', 5925), (u'experience great difficulty', 4893),\
-    # (u'find great difficulty', 4360), (u'have real difficulty', 3847),\
-    # (u'be with great difficulty', 3544), (u'be little difficulty', 3527),\
-    # (u'face financial difficulty', 3390), (u'experience financial difficulty', 3026),\
-    # (u'have particular difficulty', 3005), (u'get into financial difficulty', 2219),\
-    # (u'be great difficulty', 2160), (u'reflect the overall difficulty', 2116),\
-    # (u'be with the greatest difficulty', 1893), (u'experience academic difficulty', 1864),\
-    # (u'have significant difficulty', 1834), (u'have serious difficulty', 1824),\
-    # (u'indicate the relative difficulty', 1820), (u'have increasing difficulty', 1703),\
-    # (u'work of considerable difficulty', 1689), (u'be the technical difficulty', 1669),\
-    # (u'manage financial difficulty', 1635), (u'find little difficulty', 1483)]
-    
-    print type(post[0])
+
     dic = defaultdict(tuple)
     for i in range(len(post)):
         dic[post[i][0].split(' ')[0]] += tuple((post[i][0], post[i][1]))
@@ -78,7 +62,6 @@ def vanCollocation(headword):
     for key, value in dic.items():
         freq = 0
         if len(value) >= 6:
-            #print type(key), type(value)
             for i in range(len(value)):
                 if i%2 == 1:
                     print 'key: ' + str(key)
@@ -88,13 +71,9 @@ def vanCollocation(headword):
             mergeList.append((key + ' ?prep. ?det. adj. ' + headword, freq))
         else:
             mergeList.append(value)
-        # for v in value:
-        #     print v[0].split(' ')[-2]
-    print mergeList
-    print mergeItems
+
     mergeList.sort(key=lambda x:x[1], reverse=True)
     return (mergeList, mergeItems)
-    #return mergeList
 
 def anCollocation(headword):
     template1 = 'det./prep. adj. %s'
@@ -175,7 +154,7 @@ def transQuery(question):
     print headword
 
     # use search_tag() to get headword's speech
-    # noun -> n ; verb -> v ; adj -> a ; adv -> r ; prep -> p ; interjection -> i
+    # noun -> n ; verb -> v ; adj -> a ; adv -> r ; prep -> p ; interjection -> i ...
     tags = sqlite.search_tag(headword[0].strip())
     print tags
 
@@ -209,13 +188,14 @@ def transQuery(question):
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(adv_aCollocation(headword[0]))
     elif 'W' in speech_n:
-        finalRes.append([headword[0], 'adj. '+headword[0], \
-            'v. ?prep. ?det. adj. '+headword[0], \
-            'adv. ?adj. '+headword[0]])
-        finalRes.append(anCollocation(headword[0]))
-        finalRes.append(vanCollocation(headword[0]))
-        finalRes.append(adv_aCollocation(headword[0]))
-        #print '>>>' + str(vanCollocation(headword[0]).keys())
+        if 'v' in tags or 'a' in tags:
+            finalRes.append(['adv. ?adj. '+headword[0]])
+            finalRes.append(adv_aCollocation(headword[0]))
+        else:
+            finalRes.append(['adj. '+headword[0], \
+                'v. ?prep. ?det. adj. '+headword[0]])
+            finalRes.append(anCollocation(headword[0]))
+            finalRes.append(vanCollocation(headword[0]))
     else:
         finalRes.append('I don\'t know what are you talking about')
 
