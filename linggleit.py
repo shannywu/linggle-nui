@@ -153,7 +153,7 @@ def transQuery(question):
     print headword
 
     # use search_tag() to get headword's speech
-    # noun -> n ; verb -> v ; adj -> a ; adv -> r ; prep -> p ; interjection -> i
+    # noun -> n ; verb -> v ; adj -> a ; adv -> r ; prep -> p ; interjection -> i ...
     tags = sqlite.search_tag(headword[0].strip())
     print tags
 
