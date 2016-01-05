@@ -3,10 +3,13 @@
   <div class="row">
     <form action="{{ url_for('add_entry') }}" method="post" class="add-entry">
       <div class="input-group">
-        <input type="text" name="text" size="40" class="form-control" value="{{ inputquery[0] }}">
+        <input id="textBox" type="text" name="text" size="40" class="form-control" value="{{ inputquery[0] }}">
         <div class="input-group-btn">
+          <button class="btn btn-info" id="startStopButton" type="button" value="辨識" onclick="startButton(event)">
+            <span class="glyphicon glyphicon-earphone"></span>
+          </button>
           <button class="btn btn-info" type="submit" value="Input">
-            <span class="glyphicon glyphicon-search"></span> 
+            <span class="glyphicon glyphicon-search"></span>
           </button>
         </div>
       </div>
@@ -37,6 +40,3 @@
     {% endfor %}
   </div>
 {% endblock %}
-
-
-

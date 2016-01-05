@@ -8,7 +8,7 @@ var recognizing = false; // 是否辨識中
 function startButton(event) {
   infoBox = document.getElementById("infoBox"); // 取得訊息控制項 infoBox
   textBox = document.getElementById("textBox"); // 取得最終的辨識訊息控制項 textBox
-  tempBox = document.getElementById("tempBox"); // 取得中間的辨識訊息控制項 tempBox
+  tempBox = document.getElementById("textBox"); // 取得中間的辨識訊息控制項 tempBox
   startStopButton = document.getElementById("startStopButton"); // 取得「辨識/停止」這個按鈕控制項
   langCombo = document.getElementById("langCombo"); // 取得「辨識語言」這個選擇控制項
   if (recognizing) { // 如果正在辨識，則停止。
@@ -17,13 +17,13 @@ function startButton(event) {
     textBox.value = ''; // 清除最終的辨識訊息
     tempBox.value = ''; // 清除中間的辨識訊息
     final_transcript = ''; // 最終的辨識訊息變數
-    recognition.lang = langCombo.value; // 設定辨識語言
+    recognition.lang = "en-US"; // 設定辨識語言
     recognition.start(); // 開始辨識
   }
 }
 
 if (!('webkitSpeechRecognition' in window)) {  // 如果找不到 window.webkitSpeechRecognition 這個屬性
-  // 就是不支援語音辨識，要求使用者更新瀏覽器。 
+  // 就是不支援語音辨識，要求使用者更新瀏覽器。
   infoBox.innerText = "本瀏覽器不支援語音辨識，請更換瀏覽器！(Chrome 25 版以上才支援語音辨識)";
 } else {
   var recognition = new webkitSpeechRecognition(); // 建立語音辨識物件 webkitSpeechRecognition
@@ -32,7 +32,7 @@ if (!('webkitSpeechRecognition' in window)) {  // 如果找不到 window.webkitS
 
   recognition.onstart = function() { // 開始辨識
     recognizing = true; // 設定為辨識中
-    startStopButton.value = "按此停止"; // 辨識中...按鈕改為「按此停止」。  
+    startStopButton.value = "按此停止"; // 辨識中...按鈕改為「按此停止」。
     infoBox.innerText = "辨識中...";  // 顯示訊息為「辨識中」...
   };
 
