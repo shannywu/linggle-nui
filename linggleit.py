@@ -76,24 +76,24 @@ def vanCollocation(headword):
     return (mergeList, mergeItems)
 
 def anCollocation(headword):
-    template1 = 'det./prep. adj. %s'
-    start1 = 1
+    template1 = '?adv. det./prep. adj. %s'
+    start1 = 0
     query = template1 % headword
     post = postProcess(start1, query)
-    headcount = int(linggleit(headword)[0]['count'])
-    rerank = []
-    for p in post:
-        colcount = int(linggleit(p[0].split(' ')[0])[0]['count'])
-        mi = math.log(float(p[1])/(colcount * headcount), 10)
-        #print p[0], mi
-        rerank.append((p[0], p[1], mi))
-    rerank.sort(key=lambda x:x[2], reverse=True)
-    # for r in rerank:
-    #     print r
-    return rerank
+    # headcount = int(linggleit(headword)[0]['count'])
+    # rerank = []
+    # for p in post:
+    #     colcount = int(linggleit(p[0].split(' ')[0])[0]['count'])
+    #     mi = math.log(float(p[1])/(colcount * headcount), 10)
+    #     #print p[0], mi
+    #     rerank.append((p[0], p[1], mi))
+    # rerank.sort(key=lambda x:x[2], reverse=True)
+    # # for r in rerank:
+    # #     print r
+    return post
 
 def vpCollocation(headword):
-    template1 = 'pron. %s ?prep. ?n.'
+    template1 = 'pron. %s prep. ?n.'
     start1 = 1
     query = template1 % headword
     post = postProcess(start1, query)
@@ -169,18 +169,18 @@ def transQuery(question):
         finalRes.append([headword[0], '~'+headword[0]])
         finalRes.append(synonym(headword[0]))
     elif 'P' in speech_n:
-        finalRes.append([headword[0], headword[0] + ' ?prep. ?n.'])
+        finalRes.append([headword[0], headword[0] + ' prep. ?n.'])
         finalRes.append(vpCollocation(headword[0]))
     elif 'A' in speech_n:
-        finalRes.append([headword[0], 'adj. ' + headword[0], \
+        finalRes.append([headword[0], '?adv. adj. ' + headword[0], \
             'v. ?prep. ?det. adj. ' + headword[0]])
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
     elif 'N' in speech_n:
-        finalRes.append([headword[0], headword[0] + ' ?prep. ?n.', \
+        finalRes.append([headword[0], headword[0] + ' prep. ?n.', \
             'v. ?prep. ?det. '+ headword[0], \
             'v. ?prep. ?det. adj. ' + headword[0], \
-            'adj. '+headword[0], \
+            '?adv. adj. '+headword[0], \
             'adv. ?adj. '+headword[0]])
         finalRes.append(vpCollocation(headword[0]))
         finalRes.append(vnCollocation(headword[0]))
@@ -190,13 +190,13 @@ def transQuery(question):
     elif 'W' in speech_n:
         if 'v' in tags or 'a' in tags:
             finalRes.append([headword[0], 'adv. ?adj. '+headword[0], \
-                'adj. '+headword[0], \
+                '?adv. adj. '+headword[0], \
                 'v. ?prep. ?det. adj. '+headword[0]])
             finalRes.append(adv_aCollocation(headword[0]))
             finalRes.append(anCollocation(headword[0]))
             finalRes.append(vanCollocation(headword[0]))    
         else:
-            finalRes.append([headword[0], 'adj. '+headword[0], \
+            finalRes.append([headword[0], '?adv. adj. '+headword[0], \
                 'v. ?prep. ?det. adj. '+headword[0]])
             finalRes.append(anCollocation(headword[0]))
             finalRes.append(vanCollocation(headword[0]))
