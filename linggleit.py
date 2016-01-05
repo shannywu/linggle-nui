@@ -15,6 +15,7 @@ def linggleit(query):
 def postProcess(start1, query):
     #print; print query; print
     res = linggleit(query)
+    #print res
     phrases = [ [  w.replace('<strong>','').replace('</strong>','')  for w in ngram['phrase'][start1:]] for ngram in res]
     phrases = [ [ sqlite.search_lemma(ph[0].strip().lower())]+ ph[1:] for ph in phrases]
     phrases = [ ' '.join([x.strip() for x in ph]) for ph in phrases]
@@ -31,8 +32,6 @@ def postProcess(start1, query):
     for ngram, count in ngramCounts:
         #print '%s\t%s' % (ngram, count)
         resList.append((ngram, count))
-
-    #dic.clear()
     return resList
 
 def adv_aCollocation(headword):
@@ -51,39 +50,67 @@ def vanCollocation(headword):
     template1 = 'v. ?prep. ?det. adj. %s'
     start1 = 0
     query = template1 % headword
-    return postProcess(start1, query)
+    post = postProcess(start1, query)
+    # post = [(u'have great difficulty', 97059), (u'have little difficulty', 35477),\
+    # (u'have experienced difficulty', 9498), (u'have a little difficulty', 9075),\
+    # (u'have greater difficulty', 8788), (u'have considerable difficulty', 8523),\
+    # (u'be in financial difficulty', 7046), (u'have extreme difficulty', 6498),\
+    # (u'have the greatest difficulty', 5925), (u'experience great difficulty', 4893),\
+    # (u'find great difficulty', 4360), (u'have real difficulty', 3847),\
+    # (u'be with great difficulty', 3544), (u'be little difficulty', 3527),\
+    # (u'face financial difficulty', 3390), (u'experience financial difficulty', 3026),\
+    # (u'have particular difficulty', 3005), (u'get into financial difficulty', 2219),\
+    # (u'be great difficulty', 2160), (u'reflect the overall difficulty', 2116),\
+    # (u'be with the greatest difficulty', 1893), (u'experience academic difficulty', 1864),\
+    # (u'have significant difficulty', 1834), (u'have serious difficulty', 1824),\
+    # (u'indicate the relative difficulty', 1820), (u'have increasing difficulty', 1703),\
+    # (u'work of considerable difficulty', 1689), (u'be the technical difficulty', 1669),\
+    # (u'manage financial difficulty', 1635), (u'find little difficulty', 1483)]
+    
+    print type(post[0])
+    dic = defaultdict(tuple)
+    for i in range(len(post)):
+        dic[post[i][0].split(' ')[0]] += tuple((post[i][0], post[i][1]))
+    
+    mergeList = []
+    mergeItems = []
+    
+    for key, value in dic.items():
+        freq = 0
+        if len(value) >= 6:
+            #print type(key), type(value)
+            for i in range(len(value)):
+                if i%2 == 1:
+                    print 'key: ' + str(key)
+                    print value[i]
+                    freq += int(value[i])
+                    mergeItems.append(tuple((key, value[i-1], value[i])))
+            mergeList.append((key + ' ?prep. ?det. adj. ' + headword, freq))
+        else:
+            mergeList.append(value)
+        # for v in value:
+        #     print v[0].split(' ')[-2]
+    print mergeList
+    print mergeItems
+    mergeList.sort(key=lambda x:x[1], reverse=True)
+    return (mergeList, mergeItems)
+    #return mergeList
 
 def anCollocation(headword):
     template1 = 'det./prep. adj. %s'
     start1 = 1
     query = template1 % headword
     post = postProcess(start1, query)
-    #print post
-    # post = [(u'sandy beach', 120497), (u'private beach', 76260), \
-    # (u'beautiful beach', 50240), (u'near beach', 42217), (u'good beach', 31485), \
-    # (u'long beach', 27049), (u'public beach', 23965), (u'small beach', 21830), \
-    # (u'nude beach', 21194), (u'main beach', 19780), (u'great beach', 14793), \
-    # (u'secluded beach', 14610), (u'nice beach', 12379), (u'tropical beach', 11170), \
-    # (u'nearby beach', 10881), (u'desert beach', 9812), (u'rocky beach', 8534), \
-    # (u'lovely beach', 7672), (u'quiet beach', 7594), (u'local beach', 6987), \
-    # (u'perfect beach', 6394), (u'spin beach', 6106), (u'popular beach', 5537), \
-    # (u'concrete beach', 5263), (u'remote beach', 5056), (u'following beach', 4980), \
-    # (u'famous beach', 4888), (u'ocean beach', 4837), (u'sunny beach', 4618), \
-    # (u'maui beach', 4369), (u'pristine beach', 4104), (u'little beach', 4072)]
-
     headcount = int(linggleit(headword)[0]['count'])
-    #headcount = 25866110
-    #print headcount
     rerank = []
     for p in post:
-        #print p[0].split(' ')[0] # first word
         colcount = int(linggleit(p[0].split(' ')[0])[0]['count'])
         mi = math.log(float(p[1])/(colcount * headcount), 10)
-        print p[0], mi
+        #print p[0], mi
         rerank.append((p[0], p[1], mi))
     rerank.sort(key=lambda x:x[2], reverse=True)
-    for r in rerank:
-        print r
+    # for r in rerank:
+    #     print r
     return rerank
 
 def vpCollocation(headword):
@@ -118,12 +145,6 @@ def synonym(headword):
     # query = template1 % headword
     return postProcess(start1, query)
 
-# def allCollocations(headword):
-#     vnCollocation(headword)
-#     anCollocation(headword)
-#     vanCollocation(headword)
-#     vpCollocation(headword)
-
 Nouns = ['words', 'word', 'nouns', 'noun', 'things', 'thing', 'something', 'example']
 Verbs = ['verbs', 'verb']
 Adjs = ['adjectives', 'ADJ', 'adj']
@@ -143,6 +164,7 @@ def transQuery(question):
     speech += ['S' for i in Synonym if i in que]
     speech += ['W' for i in wordBeforeTarget if ' '+i+' ' in ' '+' '.join(que)]
     print speech
+    
     speech_n = list(set(speech))
     print speech_n
     if 'W' in speech_n:
@@ -160,24 +182,24 @@ def transQuery(question):
     finalRes = []
 
     if 'V' in speech_n:
-        finalRes.append(['v. ?prep. ?det. ' + headword[0], \
+        finalRes.append([headword[0], 'v. ?prep. ?det. ' + headword[0], \
             'v. ?prep. ?det. adj. ' + headword[0]])
         finalRes.append(vnCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
     elif 'S' in speech_n:
-        finalRes.append(['~'+headword[0]])
+        finalRes.append([headword[0], '~'+headword[0]])
         finalRes.append(synonym(headword[0]))
     elif 'P' in speech_n:
-        finalRes.append([ headword[0] + ' ?prep. ?n.'])
+        finalRes.append([headword[0], headword[0] + ' ?prep. ?n.'])
         finalRes.append(vpCollocation(headword[0]))
     elif 'A' in speech_n:
-        finalRes.append(['adj. ' + headword[0], \
+        finalRes.append([headword[0], 'adj. ' + headword[0], \
             'v. ?prep. ?det. adj. ' + headword[0]])
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
     elif 'N' in speech_n:
-        finalRes.append([headword[0] + ' ?prep. ?n.', \
-            'v. ?prep. ?det. '+headword[0], \
+        finalRes.append([headword[0], headword[0] + ' ?prep. ?n.', \
+            'v. ?prep. ?det. '+ headword[0], \
             'v. ?prep. ?det. adj. ' + headword[0], \
             'adj. '+headword[0], \
             'adv. ?adj. '+headword[0]])
@@ -187,22 +209,26 @@ def transQuery(question):
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(adv_aCollocation(headword[0]))
     elif 'W' in speech_n:
-        finalRes.append(['adj. '+headword[0], \
+        finalRes.append([headword[0], 'adj. '+headword[0], \
             'v. ?prep. ?det. adj. '+headword[0], \
             'adv. ?adj. '+headword[0]])
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
         finalRes.append(adv_aCollocation(headword[0]))
+        #print '>>>' + str(vanCollocation(headword[0]).keys())
     else:
         finalRes.append('I don\'t know what are you talking about')
-    # finalRes.append(['test1','test2'])
-    # finalRes.append([('a',0),('b',1),('c',2),('d',3),('e',4),('f',5),('g',6)])
-    # finalRes.append([('a',6),('b',5),('c',4),('d',3),('e',2),('f',1),('g',0)])
+
+    # finalRes.append(['headword', 'test1','v. ?prep. ?det. adj.' ])
+    # finalRes.append([('a',1024),('b',1124),('c',223),('d',30),('e',1434),('f',513),('g',26), ('h',134), ('i', 22), ('j', 1548)])
+    # #finalRes.append([('a',600),('b',51),('c',2422),('d',3423),('e',342),('f',11),('g',310)])
+    # finalRes.append(vanCollocation('difficulty'))
     #print finalRes
     
     return finalRes
 
 if __name__ == '__main__':
+    #vanCollocation('difficulty')
     while True:
         query = raw_input(">>(type 'EX' to exit)\n>>query: ")
         if query == 'EX': break

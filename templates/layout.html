@@ -11,6 +11,7 @@
   <title>LinggleIt</title>
   <link rel="stylesheet" type="text/css" href = "{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" type="text/css" href = "{{ url_for('static', filename='css/bootstrap.css') }}">
+  <link rel="stylesheet" type="text/css" href = "{{ url_for('static', filename='css/bootstrap.icon-large.min.css') }}">
 </head>
 
 <body>
@@ -23,7 +24,7 @@
       {% endfor %}
       {% block body %}{% endblock %}
     </div>
-    最後結果：<input id="textBox" type="text" size="60" value=""/><BR/>
+    <!-- 最後結果：<input id="textBox" type="text" size="60" value=""/><BR/>
     中間結果：<input id="tempBox" type="text" size="60" value=""/><BR/>
     辨識語言：
     <select id="langCombo">
@@ -31,7 +32,7 @@
       <option value="cmn-Hant-TW">中文(台灣)</option>
     </select>
     <input id="startStopButton" type="button" value="辨識" onclick="startButton(event)"/><BR/>
-    <label id="infoBox"></label>
+    <label id="infoBox"></label> -->
   </div>
 
   <div class="container">
@@ -44,16 +45,16 @@
   </div>
     
 </div>
-   <!--
-   <nav class="navbar navbar-default navbar-fixed-bottom">
-    <footer>
-      <div class="row-footer">
-        <div class="col-lg-12 text-center">
-          <p>Copyright &copy; Natural Language Processing Lab 2015</p>
-        </div>
+   
+<!-- <nav class="navbar navbar-default">
+  <footer>
+    <div class="row-footer">
+      <div class="col-lg-12 text-center">
+        <p>shannywu and janeto @ Natural Language Processing Lab. 2016</p>
       </div>
-    </footer>
-    </nav>-->
+    </div>
+  </footer>
+</nav> -->
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="static/js/jquery.js"></script>
