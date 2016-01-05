@@ -22,23 +22,50 @@
 {% block result %}
   <div class="output">
     {% for i in range((output|length) - 1) %}
-    <div class="alert alert-info center-block">
-      <h4 class="text-center">{{ output[0][i] }}</h4>
-      <div class="row text">
-      {% for col in output[1:][i] %}
-        <div class="col-md-6 text-muted">
-          <font size="4">{{ col[0] }}</font>
+      <div>
+        <div class="text">
+          <table class="table table-striped center-block">
+            <div class="center-block text-center heading">{{ output[0][i+1] }}</div>
+              <tbody>
+                {% if "v. ?prep. ?det. adj." in output[0][i+1] %}
+                  {% for list in output[1:][i][0] %}
+                    <tr>
+                      <td>
+                        <font size="4" >{{ list[0] }}</font>
+                      </td>
+                      <td class="text-right">
+                        <font size="4" class="text-danger">{{ list[1] }}</font>
+                      </td>
+                      {% if "adj." in list[0] %}
+                        {% for l in output[1:][i][1] %}
+                          {% if l[0] == list[0].split(' ')[0] %}
+                            <tr>
+                              <!-- <td>{{l[0]}}</td> -->
+                              <td class="text-muted">{{ l[1] }}</td>
+                              <td class="text-right">{{ l[2] }}</td>
+                            </tr>
+                          {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                  </tr>
+                {% endfor %}
+                {% else %}
+                  {% for col in output[1:][i] %}
+                    <tr>
+                      <td><font size="4">{{ col[0] }}</font></td>
+                      <td class="text-right">
+                        <font size="4" class="text-danger">{{ col[1] }}</font>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% endif %}
+            </tbody>
+          </table>
         </div>
-        <div class="col-md-6 text-right text-danger">
-          <font size="4">{{ col[1] }}</font>
+        <div class="center-block text-center text-info more">
+          <span class="glyphicon glyphicon-chevron-down"></span>
         </div>
-      {% endfor %}
       </div>
-
-      <h5 class="text-center text-info more">
-        <span class="glyphicon glyphicon-chevron-down"></span>
-      </h5>
-    </div>
     {% endfor %}
   </div>
 {% endblock %}
