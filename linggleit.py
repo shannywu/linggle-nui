@@ -80,17 +80,17 @@ def anCollocation(headword):
     start1 = 0
     query = template1 % headword
     post = postProcess(start1, query)
-    # headcount = int(linggleit(headword)[0]['count'])
-    # rerank = []
-    # for p in post:
-    #     colcount = int(linggleit(p[0].split(' ')[0])[0]['count'])
-    #     mi = math.log(float(p[1])/(colcount * headcount), 10)
-    #     #print p[0], mi
-    #     rerank.append((p[0], p[1], mi))
-    # rerank.sort(key=lambda x:x[2], reverse=True)
-    # # for r in rerank:
-    # #     print r
-    return post
+    headcount = int(linggleit(headword)[0]['count'])
+    rerank = []
+    for p in post:
+        colcount = int(linggleit(p[0].split(' ')[-2])[0]['count'])
+        mi = math.log(float(p[-1])/(colcount * headcount), 10)
+        #print p[0], mi
+        rerank.append((p[0], p[1], mi))
+    rerank.sort(key=lambda x:x[2], reverse=True)
+    # for r in rerank:
+    #     print r
+    return rerank
 
 def vpCollocation(headword):
     template1 = 'pron. %s prep. ?n.'
