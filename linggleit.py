@@ -46,6 +46,12 @@ def vnCollocation(headword):
     query = template1 % headword
     return postProcess(start1, query)
 
+def pnCollocation(headword):
+    template1 = 'pron. prep. %s'
+    start1 = 0
+    query = template1 % headword
+    return postProcess(start1, query)    
+
 def vanCollocation(headword):
     template1 = 'v. ?prep. ?det. adj. %s'
     start1 = 0
@@ -171,8 +177,10 @@ def transQuery(question):
         finalRes.append([headword[0], '~'+headword[0]])
         finalRes.append(synonym(headword[0]))
     elif 'P' in speech_n:
-        finalRes.append([headword[0], headword[0] + ' prep. ?n.'])
+        finalRes.append([headword[0], headword[0] + ' prep. ?n.', \
+            '?_ prep. ' + headword[0]])
         finalRes.append(vpCollocation(headword[0]))
+        finalRes.append(pnCollocation(headword[0]))
     elif 'A' in speech_n:
         finalRes.append([headword[0], '?adv. adj. ' + headword[0], \
             'v. ?prep. ?det. adj. ' + headword[0]])
