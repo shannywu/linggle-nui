@@ -125,8 +125,9 @@ def synonym(headword):
     return postProcess(start1, query)
 
 Nouns = ['words', 'word', 'nouns', 'noun', 'things', 'thing', 'something', 'example']
-Verbs = ['verbs', 'verb']
-Adjs = ['adjectives', 'ADJ', 'adj']
+Verbs = ['verbs', 'verb', 'v']
+Adjs = ['adjectives', 'adjective', 'ADJ', 'adj']
+Advs = ['adverbs', 'adverb', 'adv']
 Preps = ['preposition', 'prepositions', 'prep']
 wordBeforeTarget = ['describe', 'associate with', 'associates with', 'for', 'of', 'go with', 'use with', 'go for', 'use for', 'describe for', 'do for', 'do with', 'describes', 'goes with', 'uses with', 'goes for', 'uses for', 'describes for']
 deleteWord = ['a', 'an', 'the', 'how', 'what', 'is', 'are', 'which', 'I', 'you', 'can', 'could', 'should', 'would', 'be', 'What', 'what', 'How', 'how', 'Which', 'which']
@@ -141,6 +142,7 @@ def transQuery(question):
     speech += ['A' for i in Adjs if i in que]
     speech += ['P' for i in Preps if i in que]
     speech += ['S' for i in Synonym if i in que]
+    speech += ['R' for i in Advs if i in que]
     speech += ['W' for i in wordBeforeTarget if ' '+i+' ' in ' '+' '.join(que)]
     print speech
     
@@ -176,6 +178,9 @@ def transQuery(question):
             'v. ?prep. ?det. adj. ' + headword[0]])
         finalRes.append(anCollocation(headword[0]))
         finalRes.append(vanCollocation(headword[0]))
+    elif 'R' in speech_n:
+        finalRes.append([headword[0], 'adv. ?adj. '+headword[0]])
+        finalRes.append(adv_aCollocation(headword[0]))
     elif 'N' in speech_n:
         finalRes.append([headword[0], headword[0] + ' prep. ?n.', \
             'v. ?prep. ?det. '+ headword[0], \
