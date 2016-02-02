@@ -131,7 +131,7 @@ Advs = ['adverbs', 'adverb', 'adv']
 Preps = ['preposition', 'prepositions', 'prep']
 wordBeforeTarget = ['describe', 'associate with', 'associates with', 'for', 'of', 'go with', 'use with', 'go for', 'use for', 'describe for', 'do for', 'do with', 'describes', 'goes with', 'uses with', 'goes for', 'uses for', 'describes for']
 deleteWord = ['a', 'an', 'the', 'how', 'what', 'is', 'are', 'which', 'I', 'you', 'can', 'could', 'should', 'would', 'be', 'What', 'what', 'How', 'how', 'Which', 'which']
-Synonym = ['same', 'syn', 'synonyms', 'synonym', 'alike', 'another', 'paraphase', 'replace', 'rewrite']
+Synonym = ['same', 'syn', 'synonyms', 'synonym', 'alike', 'another', 'paraphrase', 'replace', 'rewrite']
 
 def transQuery(question):
     que = [ token for token in re.findall("\w+", question)]
